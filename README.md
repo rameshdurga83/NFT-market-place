@@ -1,4 +1,13 @@
 # nft-marketplace
+
+This application is to see the different NFTs and mint new NFTs using the URL. Even thought there is a download button, NFT image can not be downloaded.
+
+The Application is build using:
+1. Solidity
+2. React js
+3. Web3 js
+
+
 Please run npm install on the terminal to download the appropriate packages already defined to the package.json file. 
 Make sure you are in the source file. 
 
