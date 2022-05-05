@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # NFT Marketplace
 
 This is a dummy NFT marketplace which shows different NFTs which are already minted on the blockchain.
