@@ -44,6 +44,13 @@ export const setCurrentKbird = (kbird) => {
   };
 };
 
+export const updateCurrentKbird = (to) => {
+  return {
+    type: actionTypes.TRANSFER_NFT,
+    payLoad: to,
+  };
+};
+
 //dispatching actions
 export const getAddress = () => {
   return async (dispatch) => {
@@ -67,9 +74,10 @@ export const getContract = () => {
   };
 };
 
-export const getNfts = (contract) => {
+export const getNfts = () => {
   return async (dispatch) => {
     try {
+      const contract = await KryptoBirdApi.getContract();
       const kryptoBirdz = await contract.methods.getKryptoBirdz().call();
       dispatch(setNfts(kryptoBirdz));
     } catch (err) {
@@ -78,21 +86,24 @@ export const getNfts = (contract) => {
   };
 };
 
-export const getTotalSupply = (contract) => {
+export const getTotalSupply = () => {
   return async (dispatch) => {
     try {
+      const contract = await KryptoBirdApi.getContract();
       const totalSupply = await contract.methods.totalSupply().call();
-      const totalSupplyInt = parseInt(totalSupply._hex);
-      dispatch(setTotalSupply(totalSupplyInt));
+      dispatch(setTotalSupply(parseInt(totalSupply)));
     } catch (err) {
       console.log(err);
     }
   };
 };
 
-export const mintNFT = (contract, account, kryptoBird) => {
+export const mintNFT = (kryptoBird) => {
   return async (dispatch) => {
     try {
+      const contract = await KryptoBirdApi.getContract();
+      const accounts = await KryptoBirdApi.getAccounts();
+      const account = accounts[0];
       await contract.methods
         .mint(kryptoBird)
         .send({
@@ -108,17 +119,41 @@ export const mintNFT = (contract, account, kryptoBird) => {
   };
 };
 
-export const setNFTDetails = (contract, index, name) => {
+export const setNFTDetails = (index, name) => {
   return async (dispatch) => {
     try {
+      const contract = await KryptoBirdApi.getContract();
       const tokenId = await contract.methods.tokenByIndex(index).call();
       const owner = await contract.methods.ownerOf(tokenId).call();
-      const kbird ={
+      const approved = await contract.methods.getApproved(tokenId).call();
+      const kbird = {
         name,
         tokenId,
         owner,
-      }
-      dispatch(setCurrentKbird(kbird))
+        approved,
+      };
+      dispatch(setCurrentKbird(kbird));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const transferNFT = (kryptoBird, to) => {
+  return async (dispatch) => {
+    try {
+      const contract = await KryptoBirdApi.getContract();
+      const accounts = await KryptoBirdApi.getAccounts();
+      const account = accounts[0];
+
+      await contract.methods
+        .transferFrom(kryptoBird.owner, to, kryptoBird.tokenId)
+        .send({
+          from: account,
+        })
+        .once("receipt", (receipt) => {
+          dispatch(updateCurrentKbird(to));
+        });
     } catch (err) {
       console.log(err);
     }

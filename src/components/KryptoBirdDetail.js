@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import * as kryptoBirdActions from "../redux/actions/kryptoBirdActions";
 import { connect } from "react-redux";
@@ -10,11 +10,10 @@ import { ListGroup, Image, Button } from "react-bootstrap";
 function KryptoBirdDetail(props) {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(props);
   useEffect(() => {
     const fetchKbirdDetails = async () => {
-      const { contract, kryptoBirdz } = props;
-      await props.actions.setNFTDetails(contract, id, kryptoBirdz[id]);
+      const { kryptoBirdz } = props;
+      await props.actions.setNFTDetails(id, kryptoBirdz[id]);
     };
     fetchKbirdDetails();
   }, []);
@@ -24,7 +23,7 @@ function KryptoBirdDetail(props) {
       <div className="border border-dark p-2 w-50 flex-shrink-0">
         <Image
           className="d-block ms-auto me-auto"
-          src={props.kbird.name}
+          src={props.kryptoBirdz[id]}
           fluid
         />
       </div>
@@ -53,7 +52,7 @@ function KryptoBirdDetail(props) {
             <Button
               variant="secondary"
               className="btn-block m-2 w-25"
-              onClick={()=>navigate('/')}
+              onClick={() => navigate("/")}
             >
               Back
             </Button>

@@ -9,3 +9,5 @@ export const SET_TOTAL_SUPPLY = "SET_TOTAL_SUPPLY";
 export const MINT_NFT = "MINT_NFT";
 
 export const SET_CURRENT_KBIRD = "SET_CURRENT_KBIRD";
+
+export const TRANSFER_NFT = "TRANSFER_NFT";

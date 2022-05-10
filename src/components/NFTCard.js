@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./NFTCard.scss";
 
-function NFTCard({ kbird , kbirdIndex }) {
+function NFTCard({ kbird , kbirdIndex, onTransfer}) {
 
   const navigate = useNavigate();
 
@@ -25,8 +25,11 @@ function NFTCard({ kbird , kbirdIndex }) {
           </Card.Text>
         </Card.Body>
         <div className="d-flex flex-row justify-content-around">
-          <Button variant="primary" onClick={viewDetails} className="m-2 btn-block">
+          <Button variant="outline-primary" onClick={viewDetails} className="mb-2 btn-block">
             View Details
+          </Button>
+          <Button variant="outline-warning" onClick={()=>{onTransfer(kbirdIndex)}} className="mb-2 btn-block">
+            Transfer NFT
           </Button>
         </div>
       </Card>

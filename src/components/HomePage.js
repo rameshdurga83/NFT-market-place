@@ -12,18 +12,24 @@ class HomePage extends Component {
     try {
       await this.props.actions.getAddress();
       await this.props.actions.getContract();
-      await this.props.actions.getNfts(this.props.contract);
-      await this.props.actions.getTotalSupply(this.props.contract);
-      console.log(this.props);
+      await this.props.actions.getNfts();
+      await this.props.actions.getTotalSupply();
     } catch (err) {
       console.error(err);
     }
+    if(window.ethereum) {
+      window.ethereum.on('chainChanged', async() => {
+        await this.props.actions.getAddress();
+      })
+      window.ethereum.on('accountsChanged', async() => {
+        await this.props.actions.getAddress();
+      })
+  }
   };
 
   onMint = async (kryptoBird) => {
-    const { contract, account } = this.props;
     try {
-      await this.props.actions.mintNFT(contract, account, kryptoBird);
+      await this.props.actions.mintNFT(kryptoBird);
     } catch (err) {
       console.log(err);
     }

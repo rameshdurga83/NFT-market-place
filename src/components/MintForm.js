@@ -29,6 +29,7 @@ function MintForm({ onMint }) {
             type="text"
             placeholder="Enter the file location"
             ref={textInput}
+            onFocus={()=>{setIsError(false)}}
           />
           {isLoading ? (
             <Spinner animation="border" variant="primary" />
@@ -38,11 +39,13 @@ function MintForm({ onMint }) {
             </Button>
           )}
         </div>
-        {isError && (<div>
-          <p className="text-sm-start small fst-italic text-danger w-50 ms-auto me-auto">
-            Location can not be empty
-          </p>
-        </div>)}
+        {isError && (
+          <div>
+            <p className="text-sm-start small fst-italic text-danger w-50 ms-auto me-auto">
+              Location can not be empty
+            </p>
+          </div>
+        )}
       </Form>
     </>
   );
